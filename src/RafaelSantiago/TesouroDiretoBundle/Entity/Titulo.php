@@ -1,0 +1,264 @@
+<?php
+
+namespace RafaelSantiago\TesouroDiretoBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @ORM\Entity(repositoryClass="RafaelSantiago\TesouroDiretoBundle\Entity\Repository\TituloRepository")
+ * @ORM\Table(name="titulo")
+ */
+class Titulo
+{
+
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(name="data_compra", type="datetime", unique=false, nullable=false)
+     * @Assert\NotBlank
+     * @var \DateTime
+     */
+    protected $data_compra;
+
+    /**
+     * @ORM\Column(name="data_vencimento", type="datetime", unique=false, nullable=false)
+     * @Assert\NotBlank
+     * @var \DateTime
+     */
+    protected $data_vencimento;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="RafaelSantiago\TesouroDiretoBundle\Entity\TituloTesouro")
+     * @ORM\JoinColumn(name="titulo_tesouro_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $titulo;
+
+    /**
+     * @ORM\Column(name="taxa", type="float", unique=false, nullable=true)
+     * @var float
+     */
+    protected $taxa;
+
+    /**
+     * @ORM\Column(name="valor_titulo", type="float", unique=false, nullable=false)
+     * @var float
+     */
+    protected $valor_titulo;
+
+    /**
+     * @ORM\Column(name="quantidade", type="float", unique=false, nullable=true)
+     * @var float
+     */
+    protected $quantidade;
+
+    /**
+     * @ORM\Column(name="valor_investido", type="float", unique=false, nullable=false)
+     * @var float
+     */
+    protected $valor_investido;
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set dataCompra
+     *
+     * @param \DateTime $dataCompra
+     *
+     * @return Titulo
+     */
+    public function setDataCompra($dataCompra)
+    {
+        $this->data_compra = $dataCompra;
+
+        return $this;
+    }
+
+    /**
+     * Get dataCompra
+     *
+     * @return \DateTime
+     */
+    public function getDataCompra()
+    {
+        return $this->data_compra;
+    }
+
+    /**
+     * Set dataVencimento
+     *
+     * @param \DateTime $dataVencimento
+     *
+     * @return Titulo
+     */
+    public function setDataVencimento($dataVencimento)
+    {
+        $this->data_vencimento = $dataVencimento;
+
+        return $this;
+    }
+
+    /**
+     * Get dataVencimento
+     *
+     * @return \DateTime
+     */
+    public function getDataVencimento()
+    {
+        return $this->data_vencimento;
+    }
+
+    /**
+     * Set titulo
+     *
+     * @param string $titulo
+     *
+     * @return Titulo
+     */
+    public function setTitulo($titulo)
+    {
+        $this->titulo = $titulo;
+
+        return $this;
+    }
+
+    /**
+     * Get titulo
+     *
+     * @return string
+     */
+    public function getTitulo()
+    {
+        return $this->titulo;
+    }
+
+    /**
+     * Set taxa
+     *
+     * @param float $taxa
+     *
+     * @return Titulo
+     */
+    public function setTaxa($taxa)
+    {
+        $this->taxa = $taxa;
+
+        return $this;
+    }
+
+    /**
+     * Get taxa
+     *
+     * @return float
+     */
+    public function getTaxa()
+    {
+        return $this->taxa;
+    }
+
+    /**
+     * Set valorTitulo
+     *
+     * @param float $valorTitulo
+     *
+     * @return Titulo
+     */
+    public function setValorTitulo($valorTitulo)
+    {
+        $this->valor_titulo = $valorTitulo;
+
+        return $this;
+    }
+
+    /**
+     * Get valorTitulo
+     *
+     * @return float
+     */
+    public function getValorTitulo()
+    {
+        return $this->valor_titulo;
+    }
+
+    /**
+     * Set quantidade
+     *
+     * @param integer $quantidade
+     *
+     * @return Titulo
+     */
+    public function setQuantidade($quantidade)
+    {
+        $this->quantidade = $quantidade;
+
+        return $this;
+    }
+
+    /**
+     * Get quantidade
+     *
+     * @return integer
+     */
+    public function getQuantidade()
+    {
+        return $this->quantidade;
+    }
+
+    /**
+     * Set valorInvestido
+     *
+     * @param float $valorInvestido
+     *
+     * @return Titulo
+     */
+    public function setValorInvestido($valorInvestido)
+    {
+        $this->valor_investido = $valorInvestido;
+
+        return $this;
+    }
+
+    /**
+     * Get valorInvestido
+     *
+     * @return float
+     */
+    public function getValorInvestido()
+    {
+        return $this->valor_investido;
+    }
+
+    public function getDiasInvestido()
+    {
+        $objDataCompra = $this->getDataCompra();
+        $objDataAtual = new \DateTime();
+
+        $diff = $objDataCompra->diff($objDataAtual);
+        return $diff->format('%d');
+    }
+
+    public function getValorAtualizado()
+    {
+        return $this->getQuantidade() * $this->getTitulo()->getValorVenda();
+    }
+
+    public function getValorProfit()
+    {
+        return $this->getValorAtualizado() - $this->getValorInvestido();
+    }
+
+}

@@ -1,0 +1,7 @@
+rafael_santiago_tesouro_direto_homepage:
+    path:     /
+    defaults: { _controller: RafaelSantiagoTesouroDiretoBundle:Default:index }
+
+rafael_santiago_tesouro_direto_insert:
+    path:     /insert
+    defaults: { _controller: RafaelSantiagoTesouroDiretoBundle:Default:insert }

@@ -1,0 +1,186 @@
+.focusedform .brand {
+    width: 150px;
+}
+
+table thead tr th a {
+    color: #000000;
+}
+
+.dropdown-menu>li>a {
+    height: 31px;
+}
+
+.fa {
+    line-height: 20px !important;
+}
+
+.qftp-dropdown-arquivos {
+    width: 180px !important;
+}
+
+.tiles-body i.fa {
+    line-height: 60px !important;
+}
+
+.select2-container.select2-allowclear .select2-choice abbr {
+    margin-top: 2px;
+    margin-right: 5px;
+}
+
+.ui-pnotify-icon .fa {
+    line-height: 26px !important;
+}
+
+h4 i.fa {
+    line-height: 15px !important;
+}
+
+.dropdown-menu-left {
+    left: 0 !important;
+}
+
+.tooltip {
+    opacity: 100;
+}
+
+.readmore {
+    margin-bottom: 0px;
+}
+
+.readmore-js-toggle {
+    margin-left: 22px;
+}
+
+.readmore-js-toggle, .readmore-js-section {
+    display: block;
+    width: 100%;
+}
+.readmore-js-section {
+    overflow: hidden;
+}
+
+.tooltip-custom-theme {
+    border-radius: 0px;
+    border: 1px solid #000;
+    background: #2a2a2a;
+    color: #fff;
+}
+/* Use this next selector to style things like font-size and line-height: */
+.tooltip-custom-theme .tooltipster-content,
+.tooltip-custom-theme-danger .tooltipster-content {
+    font-family: Arial;
+    font-size: 11px;
+    line-height: 13px;
+    padding: 5px 8px;
+    font-weight: bold;
+}
+
+.tooltip-custom-theme-danger {
+    border-radius: 0px;
+    border: 1px solid #000;
+    background: #e73c3c;
+    color: #fff;
+}
+
+td.text-center {
+    vertical-align: middle !important;
+}
+
+table > tbody > tr.unread > td {
+    background-color: #f7f8fa;
+    font-weight: bold;
+}
+
+#wrap .container {
+    padding-bottom: 100px !important;
+}
+
+#page-leftbar hr {
+    border-top: 1px solid #C4C4C4;
+}
+
+ul.panel-threads li img {
+    border: 2px solid #C4C4C4;
+}
+
+#files .row {
+    border-bottom: 1px solid #C4C4C4;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.datepicker {
+    border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+}
+
+.file-uploader {
+    border: 4px dashed #C4C4C4;
+    background-color: #FAFAFA;
+    text-align: center;
+}
+
+.file-uploader ul {
+    padding: 10px;
+    list-style: none;
+}
+
+#files .row span {
+    line-height: 34px;
+}
+
+#page-leftbar .box-logo {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#page-leftbar .box-user {
+    text-align: center;
+}
+
+#page-leftbar .box-user-small {
+    text-align: center;
+}
+
+#page-leftbar .box-user-small img {
+    border: 2px solid #A1A1A1;
+}
+
+.box-home-arquivos {
+    min-height: 285px;
+}
+
+#page-leftbar .box-user img {
+    border: 2px solid #A1A1A1;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+ul.settings-menu {
+    margin-right: 20px !important;
+}
+
+#page-heading {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #C4C4C4;
+}
+
+.navbar-brand {
+    width: 130px;
+}
+
+#diskUsage {
+    width: 150px;
+    height: 150px;
+}
+
+#diskUsage span.percent {
+    width: 150px;
+    line-height: 150px;
+    font-size: 40px;
+}
+
+.body-estatisticas {
+    min-height: 216px;
+    padding-top: 45px !important;
+}

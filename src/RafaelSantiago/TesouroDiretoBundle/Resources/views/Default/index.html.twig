@@ -1,0 +1,139 @@
+{% extends '::base.html.twig' %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li class="active"><a href="{{ path('rafael_santiago_tesouro_direto_homepage') }}">Dashboard</a></li>
+    </ol>
+{% endblock %}
+
+{% block conteudo %}
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-body">
+                    <div class="col-md-4 col-xs-12 col-sm-6">
+                        <a class="info-tiles tiles-toyo">
+                            <div class="tiles-heading">
+                                <div class="pull-left">Investido</div>
+                            </div>
+                            <div class="tiles-body">
+                                <div class="pull-left"><i class="fa fa-dollar"></i></div>
+                                <div class="pull-right">{{ valorInvestido|number_format(2,',','.') }}</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-xs-12 col-sm-6">
+                        {% set iconProfit = (porcProfit > 0) ? 'fa-caret-up' : 'fa-caret-down' %}
+                        <a class="info-tiles tiles-toyo">
+                            <div class="tiles-heading">
+                                <div class="pull-left">Em Carteira</div>
+                                <div class="pull-right"><i class="fa {{ iconProfit }}"></i> {{ porcProfit|number_format(2,',','.') }} %</div>
+                            </div>
+                            <div class="tiles-body">
+                                <div class="pull-left"><i class="fa fa-dollar"></i></div>
+                                <div class="pull-right">{{ valorCarteira|number_format(2,',','.') }}</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-xs-12 col-sm-6">
+                        <a class="info-tiles {{ classProfit }}">
+                            <div class="tiles-heading">
+                                <div class="pull-left">Lucro/Perda</div>
+                                <div class="pull-right"><i class="fa {{ iconProfit }}"></i> {{ porcProfit|number_format(2,',','.') }} %</div>
+                            </div>
+                            <div class="tiles-body">
+                                <div class="pull-left"><i class="fa fa-dollar"></i></div>
+                                <div class="pull-right">{{ valorProfit|number_format(2,',','.') }}</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="panel panel-green">
+                <div class="panel-heading">
+                    <h4>Carteira</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0" class="table table-hover table-striped">
+                            <thead>
+                            <tr>
+                                <th class="text-center">Data Compra</th>
+                                <th>Título</th>
+                                <th class="text-center">Vencimento</th>
+                                <th class="text-center">Taxa (a.a)</th>
+                                <th class="text-right">Preço</th>
+                                <th class="text-center">Quantidade</th>
+                                <th class="text-right">Valor Pago</th>
+                                <th class="text-center">Dias</th>
+                                <th class="text-right">Valor Atual</th>
+                                <th class="text-right">Profit</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for titulo in titulos %}
+                                    {% set classProfit = (titulo.ValorProfit > 0) ? 'text-success' : 'text-danger' %}
+                                    {% set iconProfit = (titulo.ValorProfit > 0) ? 'fa-arrow-up' : 'fa-arrow-down' %}
+                                    <tr>
+                                        <td class="text-center">{{ titulo.dataCompra|date('d/m/Y') }}</td>
+                                        <td>{{ titulo.titulo.descricao }}</td>
+                                        <td class="text-center">{{ titulo.dataVencimento|date('d/m/Y') }}</td>
+                                        <td class="text-center">{{ titulo.taxa|number_format(2,',','.') }} %</td>
+                                        <td class="text-right">R$ {{ titulo.valorTitulo|number_format(2,',','.') }}</td>
+                                        <td class="text-center">{{ titulo.quantidade|number_format(2,',','.') }}</td>
+                                        <td class="text-right">R$ {{ titulo.valorInvestido|number_format(2,',','.') }}</td>
+                                        <td class="text-center">{{ titulo.diasInvestido }}</td>
+                                        <td class="text-right">R$ {{ titulo.valorAtualizado|number_format(2,',','.') }}</td>
+                                        <td class="text-right {{ classProfit }}">R$ {{ titulo.valorProfit|number_format(2,',','.') }} <i class="fa {{ iconProfit }} {{ classProfit }}"></i></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="panel panel-gray">
+                <div class="panel-heading">
+                    <h4>Títulos</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <table width="100%" cellpadding="0" cellspacing="0" border="0" class="table table-hover table-striped">
+                            <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th class="text-center">Vencimento</th>
+                                <th class="text-center">Tx Compra</th>
+                                <th class="text-center">Tx Venda</th>
+                                <th class="text-center">Valor Compra</th>
+                                <th class="text-center">Valor Venda</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for tituloTesouro in titulosTesouro %}
+                                <tr>
+                                    <td>{{ tituloTesouro.descricao }}</td>
+                                    <td class="text-center">{{ tituloTesouro.dataVencimento|date('d/m/Y') }}</td>
+                                    <td class="text-center">{{ (tituloTesouro.taxaCompra > 0) ? tituloTesouro.taxaCompra|number_format(2,',','.') ~ ' %' : '-' }}</td>
+                                    <td class="text-center">{{ tituloTesouro.taxaVenda|number_format(2,',','.') }} %</td>
+                                    <td class="text-center">{{ (tituloTesouro.valorCompra > 0) ? 'R$ ' ~ tituloTesouro.valorCompra|number_format(2,',','.') : '-' }}</td>
+                                    <td class="text-center">R$ {{ tituloTesouro.valorVenda|number_format(2,',','.') }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

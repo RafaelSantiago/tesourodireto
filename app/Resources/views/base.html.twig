@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt-br">
+<head>
+    <title>Tesouro Direto</title>
+    <meta name="author" content="Quality Press" />
+    <meta name="MSSmartTagsPreventParsing" content="true" />
+    <meta http-equiv="imagetoolbar" content="no" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta name="robots" content="all" />
+    <meta name="language" content="pt-br" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% block header %}
+        <link rel="stylesheet" type='text/css' href="{{ asset ('bundles/rafaelsantiagotesourodireto/css/styles.min.css') }}" media="all" />
+        <link rel="stylesheet" type='text/css' href="{{ asset ('bundles/rafaelsantiagotesourodireto/css/qcms-template.css') }}" media="all" />
+        <link rel='stylesheet' type='text/css' href='{{ asset ('bundles/rafaelsantiagotesourodireto/js/jqueryui.css') }}' />
+        <link rel='stylesheet' type='text/css' href='{{ asset ('bundles/rafaelsantiagotesourodireto/plugins/form-toggle/toggles.css') }}' />
+        <link rel='stylesheet' type='text/css' href='{{ asset ('bundles/rafaelsantiagotesourodireto/plugins/form-jasnyupload/jasny-bootstrap.css') }}' />
+        <link rel='stylesheet' type='text/css' href='{{ asset ('bundles/rafaelsantiagotesourodireto/plugins/bootstrap3-editable/css/bootstrap-editable.css') }}' />
+        <link rel='stylesheet' type='text/css' href='{{ asset ('bundles/rafaelsantiagotesourodireto/plugins/form-select2/select2.css') }}' />
+        <link rel='stylesheet' type='text/css' href='{{ asset ('bundles/rafaelsantiagotesourodireto/plugins/tooltipster/css/tooltipster.css') }}' />
+        <link rel='stylesheet' type='text/css' href='{{ asset ('bundles/rafaelsantiagotesourodireto/plugins/pnotify/css/pnotify.custom.min.css') }}' />
+        <link rel='stylesheet' type='text/css' href='{{ asset ('bundles/rafaelsantiagotesourodireto/fonts/font-awesome/css/font-awesome.min.css') }}' />
+        <link rel='stylesheet' type='text/css' href='{{ asset ('bundles/rafaelsantiagotesourodireto/plugins/form-tokenfield/bootstrap-tokenfield.css') }}' />
+        <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/plugins/form-daterangepicker/daterangepicker-bs3.css') }}'></script>
+        <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/js/jquery-1.10.2.min.js') }}'></script>
+    {% endblock %}
+</head>
+<body>
+{% include '::/includes/header.html.twig' %}
+{% include '::/includes/navbarTop.html.twig' %}
+<div id="page-container">
+    {% include '::/includes/navbar.html.twig' %}
+    <div id="page-content">
+        <div id='wrap'>
+            <div id="page-heading">
+                {% block breadcrumb %}
+
+                {% endblock %}
+                <h1>
+                    {% block tituloPagina %}
+                        Dashboard
+                    {% endblock %}
+                </h1>
+                <div class="options">
+                    <div class="btn-toolbar">
+                        <div class="btn-group">
+                            {% block botoesTopo %}
+                            {% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                {% block filters %}
+                {% endblock %}
+                <div class="row">
+                    <div class="col-md-12">
+
+                        {% for label, flashes in app.session.flashbag.all %}
+                            {% for flash in flashes %}
+                                <div class="alert alert-dismissable alert-{{ label }}">
+                                    {% autoescape false %}
+                                        {{ flash }}
+                                    {% endautoescape %}
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">�</button>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+
+                        {% block conteudo %}
+
+                        {% endblock %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include '::/includes/footer.html.twig' %}
+</div>
+
+{% block javascripts %}
+    <script type="text/javascript">
+        // Toggle
+        var $toggle_on = 'ON';
+        var $toggle_off = 'OFF';
+    </script>
+
+    <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/js/jqueryui-1.10.3.min.js') }}'></script>
+    <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/js/jqueryui-pt_br.js') }}'></script>
+    <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/js/underscore-min.js') }}'></script>
+    <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/js/bootstrap.min.js') }}'></script>
+    <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/js/jquery.cookie.js') }}'></script>
+    <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/js/jquery.mask.min.js') }}'></script>
+    <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/js/jquery.nicescroll.min.js') }}'></script>
+    <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/plugins/form-daterangepicker/daterangepicker.min.js') }}'></script>
+    <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/plugins/form-jasnyupload/jasny-bootstrap.js') }}'></script>
+    <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/plugins/form-toggle/toggle.min.js') }}'></script>
+    <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/plugins/easypiechart/jquery.easypiechart.min.js') }}'></script>
+    <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/plugins/bootbox/bootbox.js') }}'></script>
+    <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/plugins/bootstrap3-editable/js/bootstrap-editable.min.js') }}'></script>
+    <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/plugins/form-select2/select2.min.js') }}'></script>
+    <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/plugins/form-tokenfield/bootstrap-tokenfield.js') }}'></script>
+    <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/js/readmore.min.js') }}'></script>
+    <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/js/placeholdr.js') }}'></script>
+    <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/js/application.js') }}'></script>
+    <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/js/general.js') }}'></script>
+    <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/plugins/tooltipster/js/jquery.tooltipster.min.js') }}'></script>
+{% endblock %}
+
+</body>
+</html>

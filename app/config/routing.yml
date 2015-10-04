@@ -1,0 +1,7 @@
+rafael_santiago_tesouro_direto:
+    resource: "@RafaelSantiagoTesouroDiretoBundle/Resources/config/routing.yml"
+    prefix:   /
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation

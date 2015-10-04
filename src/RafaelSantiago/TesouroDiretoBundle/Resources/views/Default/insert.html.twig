@@ -1,0 +1,47 @@
+{% extends '::base.html.twig' %}
+
+{% form_theme form '@RafaelSantiagoTesouroDireto/Form/fieldsAdminEdit.html.twig' %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('rafael_santiago_tesouro_direto_homepage') }}">Dashboard</a></li>
+        <li class="active">Inserir Título</li>
+    </ol>
+{% endblock %}
+
+{% block tituloPagina %}
+    Inserir Título
+{% endblock %}
+
+{% block filters %}
+
+{% endblock %}
+
+{% block botoesTopo %}
+    <a href="{{ path('rafael_santiago_tesouro_direto_homepage') }}" class="btn btn-default"><i class="fa fa-angle-double-left"></i> Voltar</a>
+{% endblock %}
+
+{% block conteudo %}
+    <div class="panel panel-midnightblue">
+        {{ form_start(form) }}
+        <div class="panel-heading">
+            <h4>Dados do Título</h4>
+        </div>
+        <div class="panel-body">
+            <fieldset>
+                {{ form_row(form.data_compra) }}
+                {{ form_row(form.data_vencimento) }}
+                {{ form_row(form.titulo) }}
+                {{ form_row(form.taxa) }}
+                {{ form_row(form.valor_titulo) }}
+                {{ form_row(form.quantidade) }}
+            </fieldset>
+            <div class="form-group form-actions">
+                <div class="col-sm-offset-3">
+                    {{ form_widget(form.salvar) }}
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
