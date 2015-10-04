@@ -33,7 +33,7 @@ class DefaultController extends Controller
         else {
             $porcProfit = 0;
         }
-        
+
         $classProfit = ($valorProfit > 0) ? 'tiles-success' : 'tiles-alizarin';
 
         return $this->render('RafaelSantiagoTesouroDiretoBundle:Default:index.html.twig', array(

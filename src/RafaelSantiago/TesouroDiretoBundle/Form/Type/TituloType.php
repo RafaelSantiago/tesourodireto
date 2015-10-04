@@ -26,11 +26,9 @@ class TituloType extends AbstractType
                 'required' => true,
                 'invalid_message' => 'Este campo é obrigatório',
             ))
-            ->add('titulo', 'choice', array(
-                'choices' => array(
-                    "SELIC" => 'Tesouro Selic (LFT)',
-                    "PREFIX" => 'Tesouro Prefixado (LTN)'
-                ),
+            ->add('titulo', 'entity', array(
+                'class' => 'RafaelSantiago\TesouroDiretoBundle\Entity\TituloTesouro',
+                'property' => 'descricao',
                 'label' => 'Título:',
                 'label_attr' => array(
                     'class' => 'col-sm-3 control-label'
