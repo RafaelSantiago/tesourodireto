@@ -26,7 +26,14 @@ class DefaultController extends Controller
         $valorInvestido = $rpTitulos->getValorInvestido();
         $valorCarteira = $rpTitulos->getValorCarteira();
         $valorProfit = $valorCarteira - $valorInvestido;
-        $porcProfit = (($valorCarteira * 100) / $valorInvestido) - 100;
+
+        if ($valorCarteira > 0 && $valorInvestido > 0){
+            $porcProfit = (($valorCarteira * 100) / $valorInvestido) - 100;
+        }
+        else {
+            $porcProfit = 0;
+        }
+        
         $classProfit = ($valorProfit > 0) ? 'tiles-success' : 'tiles-alizarin';
 
         return $this->render('RafaelSantiagoTesouroDiretoBundle:Default:index.html.twig', array(
