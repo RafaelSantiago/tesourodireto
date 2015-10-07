@@ -22,6 +22,10 @@ class DefaultController extends Controller
         // Titulos a venda
         $rpTitulosTesouro = $em->getRepository('RafaelSantiagoTesouroDiretoBundle:TituloTesouro');
         $arrTitulosTesouro = $rpTitulosTesouro->findAll();
+        foreach ($arrTitulosTesouro as $key => $objTituloTesouro){
+            $objTituloTesouro->setTituloHistoricosGrafico($rpTitulosTesouro->getHistoricoTitulo($objTituloTesouro, 5));
+            $arrTitulosTesouro[$key] = $objTituloTesouro;
+        }
 
         $valorInvestido = $rpTitulos->getValorInvestido();
         $valorCarteira = $rpTitulos->getValorCarteira();

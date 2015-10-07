@@ -114,6 +114,7 @@
                                 <th class="text-center">Tx Venda</th>
                                 <th class="text-center">Valor Compra</th>
                                 <th class="text-center">Valor Venda</th>
+                                <th>&nbsp;</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -125,6 +126,7 @@
                                     <td class="text-center">{{ tituloTesouro.taxaVenda|number_format(2,',','.') }} %</td>
                                     <td class="text-center">{{ (tituloTesouro.valorCompra > 0) ? 'R$ ' ~ tituloTesouro.valorCompra|number_format(2,',','.') : '-' }}</td>
                                     <td class="text-center">R$ {{ tituloTesouro.valorVenda|number_format(2,',','.') }}</td>
+                                    <td class="text-center"><span class="inline-sparkline">{{ tituloTesouro.tituloHistoricosGrafico }}</span></td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -135,5 +137,9 @@
         </div>
 
     </div>
-
+    <script type="text/javascript">
+        $(function(){
+            $('.inline-sparkline').sparkline($(this).html(),{type:'line',width:'50'});
+        })
+    </script>
 {% endblock %}

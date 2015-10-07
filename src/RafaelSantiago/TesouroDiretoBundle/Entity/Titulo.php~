@@ -256,4 +256,9 @@ class Titulo
         return $this->getQuantidade() * $this->getTitulo()->getValorVenda();
     }
 
+    public function getValorProfit()
+    {
+        return $this->getValorAtualizado() - $this->getValorInvestido();
+    }
+
 }

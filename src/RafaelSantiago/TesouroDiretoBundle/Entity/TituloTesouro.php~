@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="RafaelSantiago\TesouroDiretoBundle\Entity\Repository\TituloTesouroRepository")
  * @ORM\Table(name="titulo_tesouro")
  */
 class TituloTesouro
@@ -57,6 +57,23 @@ class TituloTesouro
      */
     protected $valor_venda;
 
+    /**
+     * @ORM\OneToMany(targetEntity="RafaelSantiago\TesouroDiretoBundle\Entity\TituloHistorico", mappedBy="titulo")
+     */
+    private $tituloHistoricos;
+
+    public $tituloHistoricosGrafico;
+
+    public function setTituloHistoricosGrafico($tituloHistoricosGrafico)
+    {
+        $this->tituloHistoricosGrafico = $tituloHistoricosGrafico;
+        return $this;
+    }
+
+    public function getTituloHistoricosGrafico()
+    {
+        return $this->tituloHistoricosGrafico;
+    }
 
     /**
      * Get id
@@ -210,5 +227,47 @@ class TituloTesouro
     public function getValorVenda()
     {
         return $this->valor_venda;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->tituloHistoricos = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add tituloHistorico
+     *
+     * @param \RafaelSantiago\TesouroDiretoBundle\Entity\TituloHistorico $tituloHistorico
+     *
+     * @return TituloTesouro
+     */
+    public function addTituloHistorico(\RafaelSantiago\TesouroDiretoBundle\Entity\TituloHistorico $tituloHistorico)
+    {
+        $this->tituloHistoricos[] = $tituloHistorico;
+
+        return $this;
+    }
+
+    /**
+     * Remove tituloHistorico
+     *
+     * @param \RafaelSantiago\TesouroDiretoBundle\Entity\TituloHistorico $tituloHistorico
+     */
+    public function removeTituloHistorico(\RafaelSantiago\TesouroDiretoBundle\Entity\TituloHistorico $tituloHistorico)
+    {
+        $this->tituloHistoricos->removeElement($tituloHistorico);
+    }
+
+    /**
+     * Get tituloHistoricos
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTituloHistoricos()
+    {
+        return $this->tituloHistoricos;
     }
 }
