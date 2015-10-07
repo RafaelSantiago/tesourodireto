@@ -31,7 +31,7 @@ class TituloTesouroRepository extends \Doctrine\ORM\EntityRepository
 
         $valores = array();
         foreach ($arrHistorico as $objTituloHistorico){
-            $valores[] = $objTituloHistorico->getValorVenda();
+            array_unshift($valores, $objTituloHistorico->getValorVenda());
         }
 
         return implode(',',$valores);
