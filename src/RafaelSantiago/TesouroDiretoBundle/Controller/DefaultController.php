@@ -23,7 +23,7 @@ class DefaultController extends Controller
         $rpTitulosTesouro = $em->getRepository('RafaelSantiagoTesouroDiretoBundle:TituloTesouro');
         $arrTitulosTesouro = $rpTitulosTesouro->findAll();
         foreach ($arrTitulosTesouro as $key => $objTituloTesouro){
-            $objTituloTesouro->setTituloHistoricosGrafico($rpTitulosTesouro->getHistoricoTitulo($objTituloTesouro, 5));
+            $objTituloTesouro->setTituloHistoricosGrafico($rpTitulosTesouro->getHistoricoTitulo($objTituloTesouro, 10));
             $arrTitulosTesouro[$key] = $objTituloTesouro;
         }
 

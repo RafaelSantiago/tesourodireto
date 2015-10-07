@@ -11,6 +11,9 @@
 
         <div class="col-md-12">
             <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4>Resumo</h4>
+                </div>
                 <div class="panel-body">
                     <div class="col-md-4 col-xs-12 col-sm-6">
                         <a class="info-tiles tiles-toyo">
@@ -99,7 +102,7 @@
         </div>
 
         <div class="col-md-12">
-            <div class="panel panel-gray">
+            <div class="panel panel-primary">
                 <div class="panel-heading">
                     <h4>Títulos</h4>
                 </div>
@@ -139,7 +142,7 @@
     </div>
     <script type="text/javascript">
         $(function(){
-            $('.inline-sparkline').sparkline($(this).html(),{type:'line',width:'50'});
+            $('.inline-sparkline').sparkline($(this).html(),{type:'line',width:'100'});
         })
     </script>
 {% endblock %}
