@@ -25,13 +25,23 @@
       <file leaf-file-name="index.html.twig" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/RafaelSantiago/TesouroDiretoBundle/Resources/views/Default/index.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-26.26923">
-              <caret line="167" column="59" selection-start-line="167" selection-start-column="59" selection-end-line="167" selection-end-column="59" />
+            <state vertical-scroll-proportion="-43.923077">
+              <caret line="110" column="110" selection-start-line="110" selection-start-column="110" selection-end-line="110" selection-end-column="110" />
               <folding>
                 <element signature="e#3070#3095#0#HTML" expanded="true" />
                 <element signature="e#3173#3194#0#HTML" expanded="true" />
                 <element signature="e#3252#3274#0#HTML" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Titulo.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/RafaelSantiago/TesouroDiretoBundle/Entity/Titulo.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.6873563">
+              <caret line="266" column="51" selection-start-line="266" selection-start-column="51" selection-end-line="266" selection-end-column="51" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -46,13 +56,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DefaultController.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DefaultController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/RafaelSantiago/TesouroDiretoBundle/Controller/DefaultController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.37126437">
-              <caret line="29" column="57" selection-start-line="29" selection-start-column="57" selection-end-line="29" selection-end-column="57" />
+            <state vertical-scroll-proportion="-25.5">
+              <caret line="70" column="62" selection-start-line="70" selection-start-column="62" selection-end-line="70" selection-end-column="62" />
               <folding>
-                <element signature="e#1167#1216#1#PHP" expanded="true" />
+                <element signature="e#1463#1512#1#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -80,7 +90,6 @@
         <option value="$PROJECT_DIR$/src/RafaelSantiago/TesouroDiretoBundle/Resources/config/routing.yml" />
         <option value="$PROJECT_DIR$/src/RafaelSantiago/TesouroDiretoBundle/Entity/TituloHistorico.php" />
         <option value="$PROJECT_DIR$/src/RafaelSantiago/TesouroDiretoBundle/Command/TitulosCommand.php" />
-        <option value="$PROJECT_DIR$/src/RafaelSantiago/TesouroDiretoBundle/Entity/Titulo.php" />
         <option value="$PROJECT_DIR$/src/RafaelSantiago/TesouroDiretoBundle/Form/Type/TituloType.php" />
         <option value="$PROJECT_DIR$/app/config/parameters.yml" />
         <option value="$PROJECT_DIR$/app/config/security.yml" />
@@ -91,8 +100,9 @@
         <option value="$PROJECT_DIR$/app/Resources/views/includes/navbarTop.html.twig" />
         <option value="$PROJECT_DIR$/app/Resources/views/base.html.twig" />
         <option value="$PROJECT_DIR$/src/RafaelSantiago/TesouroDiretoBundle/Entity/TituloTesouro.php" />
-        <option value="$PROJECT_DIR$/src/RafaelSantiago/TesouroDiretoBundle/Resources/views/Default/index.html.twig" />
         <option value="$PROJECT_DIR$/src/RafaelSantiago/TesouroDiretoBundle/Controller/DefaultController.php" />
+        <option value="$PROJECT_DIR$/src/RafaelSantiago/TesouroDiretoBundle/Resources/views/Default/index.html.twig" />
+        <option value="$PROJECT_DIR$/src/RafaelSantiago/TesouroDiretoBundle/Entity/Titulo.php" />
       </list>
     </option>
   </component>
@@ -824,13 +834,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/RafaelSantiago/TesouroDiretoBundle/Entity/Titulo.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9034483">
-          <caret line="260" column="72" selection-start-line="260" selection-start-column="72" selection-end-line="260" selection-end-column="72" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/RafaelSantiago/TesouroDiretoBundle/Command/TitulosCommand.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.74712646">
@@ -937,18 +940,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/RafaelSantiago/TesouroDiretoBundle/Resources/views/Default/index.html.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-26.26923">
-          <caret line="167" column="59" selection-start-line="167" selection-start-column="59" selection-end-line="167" selection-end-column="59" />
-          <folding>
-            <element signature="e#3070#3095#0#HTML" expanded="true" />
-            <element signature="e#3173#3194#0#HTML" expanded="true" />
-            <element signature="e#3252#3274#0#HTML" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/RafaelSantiago/TesouroDiretoBundle/Entity/TituloTesouro.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-6.0">
@@ -959,11 +950,31 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/RafaelSantiago/TesouroDiretoBundle/Controller/DefaultController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.37126437">
-          <caret line="29" column="57" selection-start-line="29" selection-start-column="57" selection-end-line="29" selection-end-column="57" />
+        <state vertical-scroll-proportion="-25.5">
+          <caret line="70" column="62" selection-start-line="70" selection-start-column="62" selection-end-line="70" selection-end-column="62" />
           <folding>
-            <element signature="e#1167#1216#1#PHP" expanded="true" />
+            <element signature="e#1463#1512#1#PHP" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/RafaelSantiago/TesouroDiretoBundle/Resources/views/Default/index.html.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-43.923077">
+          <caret line="110" column="110" selection-start-line="110" selection-start-column="110" selection-end-line="110" selection-end-column="110" />
+          <folding>
+            <element signature="e#3070#3095#0#HTML" expanded="true" />
+            <element signature="e#3173#3194#0#HTML" expanded="true" />
+            <element signature="e#3252#3274#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/RafaelSantiago/TesouroDiretoBundle/Entity/Titulo.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6873563">
+          <caret line="266" column="51" selection-start-line="266" selection-start-column="51" selection-end-line="266" selection-end-column="51" />
+          <folding />
         </state>
       </provider>
     </entry>

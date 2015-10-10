@@ -261,4 +261,16 @@ class Titulo
         return $this->getValorAtualizado() - $this->getValorInvestido();
     }
 
+    public function getValorIof()
+    {
+        $tabelaIOF = array(96,96,93,90,86,83,80,76,73,70,66,63,60,56,53,50,46,43,40,36,33,30,26,23,20,16,13,10,6,3,0);
+        $diasInvestido = $this->getDiasInvestido();
+
+        if ($diasInvestido < 30){
+            return round((($this->getValorProfit() * $tabelaIOF[$diasInvestido]) / 100),2);
+        }
+
+        return 0;
+    }
+
 }

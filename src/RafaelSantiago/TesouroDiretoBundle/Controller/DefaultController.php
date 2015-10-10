@@ -20,6 +20,8 @@ class DefaultController extends Controller
         $arrTitulos = $rpTitulos->findAll();
 
         $dadosGraficoCarteira = array();
+        $totalCarteira = 0;
+
         foreach ($arrTitulos as $objTitulo){
             $tipo = $objTitulo->getTitulo()->getTituloType();
 
@@ -29,6 +31,12 @@ class DefaultController extends Controller
             else {
                 $dadosGraficoCarteira[$tipo] += round($objTitulo->getValorAtualizado(),2);
             }
+            $totalCarteira += $objTitulo->getValorAtualizado();
+        }
+
+        $arrPorcentagensCarteira = array();
+        foreach ($dadosGraficoCarteira as $key => $value){
+            $arrPorcentagensCarteira[$key] = round((($value * 100) / $totalCarteira),2);
         }
 
         // Titulos a venda
@@ -60,7 +68,7 @@ class DefaultController extends Controller
             'valorProfit' => $valorProfit,
             'porcProfit' => $porcProfit,
             'classProfit' => $classProfit,
-            'dadosGraficoCarteira' => $dadosGraficoCarteira
+            'dadosGraficoCarteira' => $arrPorcentagensCarteira
         ));
     }
 
