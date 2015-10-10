@@ -19,6 +19,18 @@ class DefaultController extends Controller
         $rpTitulos = $em->getRepository('RafaelSantiagoTesouroDiretoBundle:Titulo');
         $arrTitulos = $rpTitulos->findAll();
 
+        $dadosGraficoCarteira = array();
+        foreach ($arrTitulos as $objTitulo){
+            $tipo = $objTitulo->getTitulo()->getTituloType();
+
+            if (!isset($dadosGraficoCarteira[$tipo])){
+                $dadosGraficoCarteira[$tipo] = round($objTitulo->getValorAtualizado(),2);
+            }
+            else {
+                $dadosGraficoCarteira[$tipo] += round($objTitulo->getValorAtualizado(),2);
+            }
+        }
+
         // Titulos a venda
         $rpTitulosTesouro = $em->getRepository('RafaelSantiagoTesouroDiretoBundle:TituloTesouro');
         $arrTitulosTesouro = $rpTitulosTesouro->findAll();
@@ -47,7 +59,8 @@ class DefaultController extends Controller
             'valorCarteira' => $valorCarteira,
             'valorProfit' => $valorProfit,
             'porcProfit' => $porcProfit,
-            'classProfit' => $classProfit
+            'classProfit' => $classProfit,
+            'dadosGraficoCarteira' => $dadosGraficoCarteira
         ));
     }
 
