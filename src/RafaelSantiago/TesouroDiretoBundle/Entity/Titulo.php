@@ -261,16 +261,51 @@ class Titulo
         return $this->getValorAtualizado() - $this->getValorInvestido();
     }
 
+    public function getValorProfitLiquido()
+    {
+        return $this->getValorProfit() - $this->getValorImpostos();
+    }
+
     public function getValorIof()
     {
         $tabelaIOF = array(96,96,93,90,86,83,80,76,73,70,66,63,60,56,53,50,46,43,40,36,33,30,26,23,20,16,13,10,6,3,0);
         $diasInvestido = $this->getDiasInvestido();
 
-        if ($diasInvestido < 30){
-            return round((($this->getValorProfit() * $tabelaIOF[$diasInvestido]) / 100),2);
+        if ($diasInvestido < 30 && $this->getValorProfit() > 0){
+            return ($this->getValorProfit() * $tabelaIOF[$diasInvestido]) / 100;
         }
 
         return 0;
+    }
+
+    public function getValorIrrf()
+    {
+        $dias = $this->getDiasInvestido();
+
+        if ($this->getValorProfit() <= 0){
+            return 0;
+        }
+
+        if ($dias <= 180){
+            $taxa = 22.5;
+        }
+        elseif ($dias <= 360){
+            $taxa = 20.0;
+        }
+        elseif ($dias <= 720){
+            $taxa = 17.5;
+        }
+        else {
+            $taxa = 15;
+        }
+
+        return ($this->getValorProfit() * $taxa) / 100;
+
+    }
+
+    public function getValorImpostos()
+    {
+        return $this->getValorIof() + $this->getValorIrrf();
     }
 
 }

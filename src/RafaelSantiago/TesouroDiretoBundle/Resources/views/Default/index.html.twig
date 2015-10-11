@@ -90,7 +90,8 @@
                                 <th class="text-center">Dias</th>
                                 <th class="text-right">Valor Atual</th>
                                 <th class="text-right">Profit</th>
-                                <th class="text-right">IOF</th>
+                                <th class="text-right">IOF + IRRF</th>
+                                <th class="text-right">Profit Liquido</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -108,7 +109,8 @@
                                         <td class="text-center">{{ titulo.diasInvestido }}</td>
                                         <td class="text-right">R$ {{ titulo.valorAtualizado|number_format(2,',','.') }}</td>
                                         <td class="text-right {{ classProfit }}">R$ {{ titulo.valorProfit|number_format(2,',','.') }} <i class="fa {{ iconProfit }} {{ classProfit }}"></i></td>
-                                        <td class="text-right">R$ {{ titulo.valorIof|number_format(2,',','.') }}</td>
+                                        <td class="text-right">R$ {{ titulo.valorImpostos|number_format(2,',','.') }}</td>
+                                        <td class="text-right {{ classProfit }}">R$ {{ titulo.valorProfitLiquido|number_format(2,',','.') }} <i class="fa {{ iconProfit }} {{ classProfit }}"></i></td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
