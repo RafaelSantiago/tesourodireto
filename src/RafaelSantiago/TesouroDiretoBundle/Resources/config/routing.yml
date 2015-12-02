@@ -5,3 +5,7 @@ rafael_santiago_tesouro_direto_homepage:
 rafael_santiago_tesouro_direto_insert:
     path:     /insert
     defaults: { _controller: RafaelSantiagoTesouroDiretoBundle:Default:insert }
+
+rafael_santiago_tesouro_direto_performance:
+    path:     /analise
+    defaults: { _controller: RafaelSantiagoTesouroDiretoBundle:Default:performance }

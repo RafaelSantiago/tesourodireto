@@ -8,4 +8,18 @@
         <a class="btn btn-green" href="{{ path('rafael_santiago_tesouro_direto_insert') }}"><i class="fa fa-cloud-upload"></i> Adicionar Título</a>
     </div>
     <hr />
+    <ul class="acc-menu" id="sidebar">
+        <li icon="fa fa-home" class="current first">
+            <a href="{{ path('rafael_santiago_tesouro_direto_homepage') }}">
+                <i class="fa fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li icon="fa fa-download">
+            <a href="{{ path('rafael_santiago_tesouro_direto_performance') }}">
+                <i class="fa fa-line-chart"></i>
+                <span>Análise</span>
+            </a>
+        </li>
+    </ul>
 </nav>

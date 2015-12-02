@@ -3,6 +3,7 @@
 namespace RafaelSantiago\TesouroDiretoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use RafaelSantiago\TesouroDiretoBundle\Helper\CalculadorHelper;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -38,6 +39,11 @@ class Titulo
      * @ORM\JoinColumn(name="titulo_tesouro_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $titulo;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TituloHistorico", mappedBy="titulo")
+     */
+    private $tituloHistoricos;
 
     /**
      * @ORM\Column(name="taxa", type="float", unique=false, nullable=true)
@@ -248,7 +254,7 @@ class Titulo
         $objDataAtual = new \DateTime();
 
         $diff = $objDataCompra->diff($objDataAtual);
-        return $diff->format('%d');
+        return $diff->format('%a');
     }
 
     public function getValorAtualizado()
@@ -306,6 +312,54 @@ class Titulo
     public function getValorImpostos()
     {
         return $this->getValorIof() + $this->getValorIrrf();
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->tituloHistoricos = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add tituloHistorico
+     *
+     * @param \RafaelSantiago\TesouroDiretoBundle\Entity\TituloHistorico $tituloHistorico
+     *
+     * @return Titulo
+     */
+    public function addTituloHistorico(\RafaelSantiago\TesouroDiretoBundle\Entity\TituloHistorico $tituloHistorico)
+    {
+        $this->tituloHistoricos[] = $tituloHistorico;
+
+        return $this;
+    }
+
+    /**
+     * Remove tituloHistorico
+     *
+     * @param \RafaelSantiago\TesouroDiretoBundle\Entity\TituloHistorico $tituloHistorico
+     */
+    public function removeTituloHistorico(\RafaelSantiago\TesouroDiretoBundle\Entity\TituloHistorico $tituloHistorico)
+    {
+        $this->tituloHistoricos->removeElement($tituloHistorico);
+    }
+
+    /**
+     * Get tituloHistoricos
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTituloHistoricos()
+    {
+        return $this->tituloHistoricos;
+    }
+
+    public function getPrevisaoValorVencimento()
+    {
+        $objCalculador = new CalculadorHelper();
+        $objCalculador->calculaPrecoFinalTitulo($this);
     }
 
 }

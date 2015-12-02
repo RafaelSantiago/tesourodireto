@@ -1,4 +1,7 @@
 services:
-#    rafael_santiago_tesouro_direto.example:
-#        class: RafaelSantiago\TesouroDiretoBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    twig.extension.titulo_profit:
+        class: RafaelSantiago\TesouroDiretoBundle\Twig\ProfitExtension
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+        tags:
+            - { name: twig.extension }

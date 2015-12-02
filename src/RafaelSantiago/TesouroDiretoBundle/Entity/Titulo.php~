@@ -3,7 +3,9 @@
 namespace RafaelSantiago\TesouroDiretoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bundle\SecurityBundle\Tests\Functional\Bundle\AclBundle\Entity\Car;
 use Symfony\Component\Validator\Constraints as Assert;
+use Carbon\Carbon;
 
 /**
  * @ORM\Entity(repositoryClass="RafaelSantiago\TesouroDiretoBundle\Entity\Repository\TituloRepository")
@@ -38,6 +40,11 @@ class Titulo
      * @ORM\JoinColumn(name="titulo_tesouro_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $titulo;
+
+    /**
+     * @ORM\OneToMany(targetEntity="TituloHistorico", mappedBy="titulo")
+     */
+    private $tituloHistoricos;
 
     /**
      * @ORM\Column(name="taxa", type="float", unique=false, nullable=true)
@@ -248,7 +255,7 @@ class Titulo
         $objDataAtual = new \DateTime();
 
         $diff = $objDataCompra->diff($objDataAtual);
-        return $diff->format('%d');
+        return $diff->format('%a');
     }
 
     public function getValorAtualizado()
@@ -259,6 +266,76 @@ class Titulo
     public function getValorProfit()
     {
         return $this->getValorAtualizado() - $this->getValorInvestido();
+    }
+
+    public function getValorProfitLiquido()
+    {
+        return $this->getValorProfit() - $this->getValorImpostos();
+    }
+
+    public function getValorIof()
+    {
+        $tabelaIOF = array(96,96,93,90,86,83,80,76,73,70,66,63,60,56,53,50,46,43,40,36,33,30,26,23,20,16,13,10,6,3,0);
+        $diasInvestido = $this->getDiasInvestido();
+
+        if ($diasInvestido < 30 && $this->getValorProfit() > 0){
+            return ($this->getValorProfit() * $tabelaIOF[$diasInvestido]) / 100;
+        }
+
+        return 0;
+    }
+
+    public function getValorIrrf()
+    {
+        $dias = $this->getDiasInvestido();
+
+        if ($this->getValorProfit() <= 0){
+            return 0;
+        }
+
+        if ($dias <= 180){
+            $taxa = 22.5;
+        }
+        elseif ($dias <= 360){
+            $taxa = 20.0;
+        }
+        elseif ($dias <= 720){
+            $taxa = 17.5;
+        }
+        else {
+            $taxa = 15;
+        }
+
+        return ($this->getValorProfit() * $taxa) / 100;
+
+    }
+
+    public function getValorImpostos()
+    {
+        return $this->getValorIof() + $this->getValorIrrf();
+    }
+
+    public function getRentabilidadeTitulo()
+    {
+
+        $arrRentabilidades = array(
+            '1day' => 0,
+            'week' => 0,
+            'month' => 0,
+            '30days' => 0,
+            'year' => 0,
+            '12months' => 0
+        );
+
+        $objDateToday = new Carbon('today');
+
+        // 1 dia
+        $objDataStartOfWeek = $objDateToday->startOfWeek();
+        $arrHistorico = $this-
+        $objDateYesterday = new Carbon('yesterday');
+
+        echo $objDateYesterday->format('d/m/Y');
+
     }
 
 }

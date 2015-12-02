@@ -2,6 +2,10 @@
 
 namespace RafaelSantiago\TesouroDiretoBundle\Entity\Repository;
 
+use RafaelSantiago\TesouroDiretoBundle\Entity\Titulo;
+use RafaelSantiago\TesouroDiretoBundle\Entity\TituloHistorico;
+use Carbon\Carbon;
+
 /**
  * TituloRepository
  *
@@ -46,6 +50,163 @@ class TituloRepository extends \Doctrine\ORM\EntityRepository
         }
 
         return $valor;
+    }
+
+    public function getRentabilidadeTitulo(Titulo $objTitulo)
+    {
+
+        $arrRentabilidades = array();
+        $objDataHoje = new Carbon('today');
+
+        // Busca último historico de preço
+        $query = $this
+            ->getEntityManager()
+            ->createQueryBuilder()
+            ->select('tituloHistorico')
+            ->from('RafaelSantiagoTesouroDiretoBundle:TituloHistorico', 'tituloHistorico')
+            ->where('tituloHistorico.data <= :data')
+            ->andWhere('tituloHistorico.titulo = :tituloTesouroId')
+            ->orderBy('tituloHistorico.data', 'DESC')
+            ->setParameter('tituloTesouroId', $objTitulo->getTitulo()->getId())
+            ->setParameter('data', $objDataHoje);
+        $arrTitulosHistorico = $query->getQuery()->execute();
+
+        if (count($arrTitulosHistorico) > 0){
+            $objTituloHistoricoHoje = $arrTitulosHistorico[0];
+
+            $objDataUltimaCotacao = Carbon::instance($objTituloHistoricoHoje->getData());
+            $arrRentabilidades['today'] = array(
+                'date' => $objDataUltimaCotacao->format('Y-m-d'),
+                'value' => $objTituloHistoricoHoje->getValorVenda() * $objTitulo->getQuantidade()
+            );
+        }
+        else {
+            return null;
+        }
+
+        // Query para busca das cotações antigas
+        $query = $this
+            ->getEntityManager()
+            ->createQueryBuilder()
+                ->select('tituloHistorico')
+                ->from('RafaelSantiagoTesouroDiretoBundle:TituloHistorico', 'tituloHistorico')
+                ->where('tituloHistorico.data >= :data')
+                ->andWhere('tituloHistorico.data >= :data_compra')
+                ->andWhere('tituloHistorico.titulo = :tituloTesouroId')
+                ->orderBy('tituloHistorico.data', 'ASC')
+                ->setParameter('tituloTesouroId', $objTitulo->getTitulo()->getId())
+                ->setParameter('data_compra', $objTitulo->getDataCompra());
+
+        // 1 day
+        $objDataOntem = clone($objDataUltimaCotacao);
+        $objDataOntem = $objDataOntem->subDay();
+
+        $query->setParameter('data', $objDataOntem);
+        $arrTituloHistorico = $query->getQuery()->execute();
+
+        if (Count($arrTituloHistorico) > 0){
+            /** @var TituloHistorico $objTituloHistorico */
+            $objTituloHistorico = $arrTituloHistorico[0];
+
+            $arrRentabilidades['1day'] = array(
+                'date' => $objDataOntem->format('Y-m-d'),
+                'value' => $objTituloHistorico->getValorVenda() * $objTitulo->getQuantidade()
+            );
+
+        }
+        else {
+            $arrRentabilidades['1day'] = array(
+                'date' => $objDataUltimaCotacao->format('Y-m-d'),
+                'value' => $arrRentabilidades['today']
+            );
+        }
+
+        // Week
+        $objDataWeek = clone($objDataUltimaCotacao);
+        $objDataWeek = $objDataWeek->startOfWeek();
+
+        $query->setParameter('data', $objDataWeek);
+        $arrTituloHistorico = $query->getQuery()->execute();
+
+        if (Count($arrTituloHistorico) > 0){
+            /** @var TituloHistorico $objTituloHistorico */
+            $objTituloHistorico = $arrTituloHistorico[0];
+
+            $arrRentabilidades['week'] = array(
+                'date' => $objDataWeek->format('Y-m-d'),
+                'value' => $objTituloHistorico->getValorVenda() * $objTitulo->getQuantidade()
+            );
+        }
+
+        // month
+        $objDataMonth = clone($objDataUltimaCotacao);
+        $objDataMonth = $objDataMonth->firstOfMonth();
+
+        $query->setParameter('data', $objDataMonth);
+        $arrTituloHistorico = $query->getQuery()->execute();
+
+        if (Count($arrTituloHistorico) > 0){
+            /** @var TituloHistorico $objTituloHistorico */
+            $objTituloHistorico = $arrTituloHistorico[0];
+
+            $arrRentabilidades['month'] = array(
+                'date' => $objDataMonth->format('Y-m-d'),
+                'value' => $objTituloHistorico->getValorVenda() * $objTitulo->getQuantidade()
+            );
+        }
+
+        // 30 days
+        $objData30days = clone($objDataUltimaCotacao);
+        $objData30days = $objData30days->subDays(30);
+
+        $query->setParameter('data', $objData30days);
+        $arrTituloHistorico = $query->getQuery()->execute();
+
+        if (Count($arrTituloHistorico) > 0){
+            /** @var TituloHistorico $objTituloHistorico */
+            $objTituloHistorico = $arrTituloHistorico[0];
+
+            $arrRentabilidades['30days'] = array(
+                'date' => $objData30days->format('Y-m-d'),
+                'value' => $objTituloHistorico->getValorVenda() * $objTitulo->getQuantidade()
+            );
+        }
+
+        // year
+        $objDataYear = clone($objDataUltimaCotacao);
+        $objDataYear = $objDataYear->firstOfYear();
+
+        $query->setParameter('data', $objDataYear);
+        $arrTituloHistorico = $query->getQuery()->execute();
+
+        if (Count($arrTituloHistorico) > 0){
+            /** @var TituloHistorico $objTituloHistorico */
+            $objTituloHistorico = $arrTituloHistorico[0];
+
+            $arrRentabilidades['year'] = array(
+                'date' => $objDataYear->format('Y-m-d'),
+                'value' => $objTituloHistorico->getValorVenda() * $objTitulo->getQuantidade()
+            );
+        }
+
+        // 12 months
+        $objData12months = $objDataUltimaCotacao->subMonths(12);
+
+        $query->setParameter('data', $objData12months);
+        $arrTituloHistorico = $query->getQuery()->execute();
+
+        if (Count($arrTituloHistorico) > 0){
+            /** @var TituloHistorico $objTituloHistorico */
+            $objTituloHistorico = $arrTituloHistorico[0];
+
+            $arrRentabilidades['12months'] = array(
+                'date' => $objData12months->format('Y-m-d'),
+                'value' => $objTituloHistorico->getValorVenda() * $objTitulo->getQuantidade()
+            );
+        }
+
+        return $arrRentabilidades;
+
     }
 
 }

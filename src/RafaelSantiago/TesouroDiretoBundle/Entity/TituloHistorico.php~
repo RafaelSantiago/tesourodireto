@@ -20,7 +20,7 @@ class TituloHistorico
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="RafaelSantiago\TesouroDiretoBundle\Entity\TituloTesouro")
+     * @ORM\ManyToOne(targetEntity="RafaelSantiago\TesouroDiretoBundle\Entity\TituloTesouro", inversedBy="tituloHistoricos")
      * @ORM\JoinColumn(name="titulo_tesouro_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $titulo;

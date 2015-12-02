@@ -12,6 +12,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class TituloTesouro
 {
 
+    const TYPE_SELIC = 'SELIC';
+    const TYPE_PREFIX = 'PREFIXADO';
+    const TYPE_IPCA = 'IPCA';
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -269,5 +273,24 @@ class TituloTesouro
     public function getTituloHistoricos()
     {
         return $this->tituloHistoricos;
+    }
+
+    public function getTituloType()
+    {
+        $name = $this->getDescricao();
+
+        if (strpos($name, 'NTNB') !== false){
+            return self::TYPE_IPCA;
+        }
+        elseif (strpos($name, 'LTN') !== false || strpos($name, 'NTNF') !== false){
+            return self::TYPE_PREFIX;
+        }
+        elseif (strpos($name, 'LFT') !== false){
+            return self::TYPE_SELIC;
+        }
+        else {
+            return '';
+        }
+
     }
 }

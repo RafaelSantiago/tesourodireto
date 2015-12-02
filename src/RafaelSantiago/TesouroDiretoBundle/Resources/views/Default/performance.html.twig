@@ -1,0 +1,227 @@
+{% extends '::base.html.twig' %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('rafael_santiago_tesouro_direto_homepage') }}">Dashboard</a></li>
+        <li class="active">Análise</li>
+    </ol>
+{% endblock %}
+
+{% block tituloPagina %}
+    Análise
+{% endblock %}
+
+{% block conteudo %}
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4>Performance</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-2 col-xs-12 col-sm-6">
+                        <a class="info-tiles tiles-toyo">
+                            <div class="tiles-heading">
+                                <div class="text-center">Dia</div>
+                            </div>
+                            <div class="tiles-body">
+                                <div class="text-center">{{ rentabilidadesGerais['1day']|round(2) }} %</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-2 col-xs-12 col-sm-6">
+                        <a class="info-tiles tiles-toyo">
+                            <div class="tiles-heading">
+                                <div class="text-center">Semana</div>
+                            </div>
+                            <div class="tiles-body">
+                                <div class="text-center">{{ rentabilidadesGerais['week']|round(2) }} %</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-2 col-xs-12 col-sm-6">
+                        <a class="info-tiles tiles-toyo">
+                            <div class="tiles-heading">
+                                <div class="text-center">Mês</div>
+                            </div>
+                            <div class="tiles-body">
+                                <div class="text-center">{{ rentabilidadesGerais['month']|round(2) }} %</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-2 col-xs-12 col-sm-6">
+                        <a class="info-tiles tiles-toyo">
+                            <div class="tiles-heading">
+                                <div class="text-center">30 dias</div>
+                            </div>
+                            <div class="tiles-body">
+                                <div class="text-center">{{ rentabilidadesGerais['30days']|round(2) }} %</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-2 col-xs-12 col-sm-6">
+                        <a class="info-tiles tiles-toyo">
+                            <div class="tiles-heading">
+                                <div class="text-center">Ano</div>
+                            </div>
+                            <div class="tiles-body">
+                                <div class="text-center">{{ rentabilidadesGerais['year']|round(2)|number_format(2,',','.') }} %</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-2 col-xs-12 col-sm-6">
+                        <a class="info-tiles tiles-toyo">
+                            <div class="tiles-heading">
+                                <div class="text-center">12 Meses</div>
+                            </div>
+                            <div class="tiles-body">
+                                <div class="text-center">{{ rentabilidadesGerais['12months']|round(2) }} %</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4>Títulos</h4>
+                    <div class="options">
+                        <ul class="nav nav-tabs">
+                            {% set firstTab = true %}
+                            {% if arrTitulosNTNB|length > 0 %}
+                                {% set tabActive = (firstTab) ? "active" : "" %}
+                                {% set firstTab = false %}
+                                <li class="{{ tabActive }}">
+                                    <a href="#ntnb" data-toggle="tab">NTNB</a>
+                                </li>
+                            {% endif %}
+                            {% if arrTitulosNTNBP|length > 0 %}
+                                {% set tabActive = (firstTab) ? "active" : "" %}
+                                {% set firstTab = false %}
+                                <li class="{{ tabActive }}">
+                                    <a href="#ntnbp" data-toggle="tab">NTNB Princ</a>
+                                </li>
+                            {% endif %}
+                            {% if arrTitulosLTN|length > 0 %}
+                                {% set tabActive = (firstTab) ? "active" : "" %}
+                                {% set firstTab = false %}
+                                <li class="{{ tabActive }}">
+                                    <a href="#ltn" data-toggle="tab">LTN</a>
+                                </li>
+                            {% endif %}
+                            {% if arrTitulosNTNF|length > 0 %}
+                                {% set tabActive = (firstTab) ? "active" : "" %}
+                                {% set firstTab = false %}
+                                <li class="{{ tabActive }}">
+                                    <a href="#ntnf" data-toggle="tab">NTNF</a>
+                                </li>
+                            {% endif %}
+                            {% if arrTitulosLFT|length > 0 %}
+                                {% set tabActive = (firstTab) ? "active" : "" %}
+                                {% set firstTab = false %}
+                                <li class="{{ tabActive }}">
+                                    <a href="#lft" data-toggle="tab">LFT</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="tab-content">
+                        {% set firstTab = true %}
+                        {% if arrTitulosNTNB|length > 0 %}
+                            {% set firstTab = false %}
+                            <div class="tab-pane active" id="ntnb">NTNB</div>
+                        {% endif %}
+                        {% if arrTitulosNTNBP|length > 0 %}
+                            {% set tabActive = (firstTab) ? "active" : "" %}
+                            {% set firstTab = false %}
+                            <div class="tab-pane {{ tabActive }}" id="ntnbp">NTNB Princ</div>
+                        {% endif %}
+                        {% if arrTitulosLTN|length > 0 %}
+                            {% set tabActive = (firstTab) ? "active" : "" %}
+                            {% set firstTab = false %}
+                            <div class="tab-pane {{ tabActive }}" id="ltn">
+                                <div class="row">
+                                    <table width="100%" cellpadding="0" cellspacing="0" border="0" class="table table-hover table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Título</th>
+                                            <th class="text-center">Quantidade</th>
+                                            <th class="text-center">Vlr. Investido</th>
+                                            <th class="text-center">Vlr. Atual</th>
+                                            <th class="text-center">Profit</th>
+                                            <th class="text-center">Vlr. Vcto.</th>
+                                            <th class="text-center">Profit Vcto.</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for titulo in arrTitulosLTN %}
+                                            <tr>
+                                                <td>{{ titulo.descricao }}</td>
+                                                <td class="text-center">{{ titulo.quantidade|number_format(2,',','.') }}</td>
+                                                <td class="text-center">{{ titulo.valorCompra|number_format(2,',','.') }}</td>
+                                                <td class="text-center">{{ titulo.valorAtual|number_format(2,',','.') }}</td>
+                                                <td class="text-center">{% autoescape false %}{{ titulo_profit(titulo.valorCompra, titulo.valorAtual) }}{% endautoescape %}</td>
+                                                <td class="text-center">{{ titulo.valorVencimento|number_format(2,',','.') }}</td>
+                                                <td class="text-center">{% autoescape false %}{{ titulo_profit(titulo.valorCompra, titulo.valorVencimento) }}{% endautoescape %}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if arrTitulosNTNF|length > 0 %}
+                            {% set tabActive = (firstTab) ? "active" : "" %}
+                            {% set firstTab = false %}
+                            <div class="tab-pane {{ tabActive }}" id="ntnf">NTNF</div>
+                        {% endif %}
+                        {% if arrTitulosLFT|length > 0 %}
+                            {% set tabActive = (firstTab) ? "active" : "" %}
+                            {% set firstTab = false %}
+                            <div class="tab-pane {{ tabActive }}" id="lft">
+                                <div class="row">
+                                    <table width="100%" cellpadding="0" cellspacing="0" border="0" class="table table-hover table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Título</th>
+                                            <th class="text-center">Quantidade</th>
+                                            <th class="text-center">Vlr. Investido</th>
+                                            <th class="text-center">Vlr. Atual</th>
+                                            <th class="text-center">Profit</th>
+                                            <th class="text-center">Vlr. Vcto.</th>
+                                            <th class="text-center">Profit Vcto.</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for titulo in arrTitulosLFT %}
+                                                <tr>
+                                                    <td>{{ titulo.descricao }}</td>
+                                                    <td class="text-center">{{ titulo.quantidade|number_format(2,',','.') }}</td>
+                                                    <td class="text-center">{{ titulo.valorCompra|number_format(2,',','.') }}</td>
+                                                    <td class="text-center">{{ titulo.valorAtual|number_format(2,',','.') }}</td>
+                                                    <td class="text-center">{% autoescape false %}{{ titulo_profit(titulo.valorCompra, titulo.valorAtual) }}{% endautoescape %}</td>
+                                                    <td class="text-center">{{ titulo.valorVencimento|number_format(2,',','.') }}</td>
+                                                    <td class="text-center">{% autoescape false %}{{ titulo_profit(titulo.valorCompra, titulo.valorVencimento) }}{% endautoescape %}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

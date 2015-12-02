@@ -4,6 +4,7 @@ namespace RafaelSantiago\TesouroDiretoBundle\Controller;
 
 use RafaelSantiago\TesouroDiretoBundle\Entity\Titulo;
 use RafaelSantiago\TesouroDiretoBundle\Form\Type\TituloType;
+use RafaelSantiago\TesouroDiretoBundle\Helper\CalculadorHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DomCrawler\Crawler;
@@ -108,6 +109,120 @@ class DefaultController extends Controller
             'form' => $formTitulo->createView()
         ));
 
+    }
+
+    public function performanceAction(Request $request)
+    {
+
+        $arrRentabilidades = $this->calculaRentabilidadeTitulos();
+        $arrTitulosAgrupadosLFT = $this->getTitulosAgrupados('LFT');
+        $arrTitulosAgrupadosLTN = $this->getTitulosAgrupados('LTN');
+        $arrTitulosAgrupadosNTNB = $this->getTitulosAgrupados('NTNB');
+        $arrTitulosAgrupadosNTNBP = $this->getTitulosAgrupados('NTNB Princ');
+        $arrTitulosAgrupadosNTNF = $this->getTitulosAgrupados('NTNF');
+
+        return $this->render('@RafaelSantiagoTesouroDireto/Default/performance.html.twig', array(
+            'rentabilidadesGerais' => $arrRentabilidades,
+            'arrTitulosLFT' => $arrTitulosAgrupadosLFT,
+            'arrTitulosLTN' => $arrTitulosAgrupadosLTN,
+            'arrTitulosNTNB' => $arrTitulosAgrupadosNTNB,
+            'arrTitulosNTNBP' => $arrTitulosAgrupadosNTNBP,
+            'arrTitulosNTNF' => $arrTitulosAgrupadosNTNF,
+        ));
+    }
+
+    private function getTitulosAgrupados($type)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $repoTituloTesouro = $em->getRepository('RafaelSantiagoTesouroDiretoBundle:TituloTesouro');
+        $repoTitulo = $em->getRepository('RafaelSantiagoTesouroDiretoBundle:Titulo');
+
+        $arrTitulosTesouro = $repoTituloTesouro->findByType($type);
+        $arrTitulosCarteira = $repoTitulo->findByTitulo($arrTitulosTesouro);
+
+        $arrTitulosAgrupados = array();
+
+        $calculador = new CalculadorHelper($em);
+
+        foreach ($arrTitulosCarteira as $objTitulo){
+            /** @var Titulo $objTitulo */
+            /** @var TituloTesouro $objTituloTesouro */
+
+            $objTituloTesouro = $objTitulo->getTitulo();
+
+            if (!isset($arrTitulosAgrupados[$objTituloTesouro->getId()])){
+
+                $arrTitulosAgrupados[$objTituloTesouro->getId()] = array(
+                    'tituloTesouroId'   => $objTituloTesouro->getId(),
+                    'descricao'         => $objTituloTesouro->getDescricao(),
+                    'quantidade'        => $objTitulo->getQuantidade(),
+                    'valorCompra'       => $objTitulo->getValorInvestido(),
+                    'valorAtual'        => $objTitulo->getValorAtualizado(),
+                    'valorVencimento'   => $calculador->calculaPrecoFinalTitulo($objTitulo),
+                );
+
+            }
+            else {
+
+                $arrTitulosAgrupados[$objTituloTesouro->getId()]['quantidade'] += $objTitulo->getQuantidade();
+                $arrTitulosAgrupados[$objTituloTesouro->getId()]['valorCompra'] += $objTitulo->getValorInvestido();
+                $arrTitulosAgrupados[$objTituloTesouro->getId()]['valorAtual'] += $objTitulo->getValorAtualizado();
+                $arrTitulosAgrupados[$objTituloTesouro->getId()]['valorVencimento'] += $calculador->calculaPrecoFinalTitulo($objTitulo);
+
+            }
+
+        }
+
+        return $arrTitulosAgrupados;
+
+    }
+    /**
+     * Retorna o array de rentabilidades dos títulos em carteira
+     * @return array
+     */
+    private function calculaRentabilidadeTitulos()
+    {
+
+        $arrValores = array(
+            'today'     => 0,
+            '1day'      => 0,
+            'week'      => 0,
+            'month'     => 0,
+            '30days'    => 0,
+            'year'      => 0,
+            '12months'  => 0
+        );
+
+        $em = $this->getDoctrine()->getManager();
+        $rpTitulos = $em->getRepository('RafaelSantiagoTesouroDiretoBundle:Titulo');
+
+        $arrTitulos = $rpTitulos->findAll();
+
+        foreach ($arrTitulos as $objTitulo){
+            $arrRentabilidadeTitulo = $rpTitulos->getRentabilidadeTitulo($objTitulo);
+
+            if ($arrRentabilidadeTitulo !== null){
+                $arrValores['today']      += $arrRentabilidadeTitulo['today']['value'];
+                $arrValores['1day']       += $arrRentabilidadeTitulo['1day']['value'];
+                $arrValores['week']       += $arrRentabilidadeTitulo['week']['value'];
+                $arrValores['month']      += $arrRentabilidadeTitulo['month']['value'];
+                $arrValores['30days']     += $arrRentabilidadeTitulo['30days']['value'];
+                $arrValores['year']       += $arrRentabilidadeTitulo['year']['value'];
+                $arrValores['12months']   += $arrRentabilidadeTitulo['12months']['value'];
+            }
+        }
+
+        $arrRentabilidades = array(
+            '1day'      => ((($arrValores['today'] * 100) / $arrValores['1day']) - 100),
+            'week'      => ((($arrValores['today'] * 100) / $arrValores['week']) - 100),
+            'month'     => ((($arrValores['today'] * 100) / $arrValores['month']) - 100),
+            '30days'    => ((($arrValores['today'] * 100) / $arrValores['30days']) - 100),
+            'year'      => ((($arrValores['today'] * 100) / $arrValores['year']) - 100),
+            '12months'  => ((($arrValores['today'] * 100) / $arrValores['12months']) - 100)
+        );
+
+        return $arrRentabilidades;
     }
 
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace RafaelSantiago\TesouroDiretoBundle\Entity\Repository;
+use RafaelSantiago\TesouroDiretoBundle\Entity\Titulo;
 
 /**
  * TituloHistoricoRepository
@@ -10,4 +11,19 @@ namespace RafaelSantiago\TesouroDiretoBundle\Entity\Repository;
  */
 class TituloHistoricoRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getUltimaCotacao(Titulo $objTitulo)
+    {
+
+        $arrHistoricos = $this->getEntityManager()->createQueryBuilder()
+            ->select('tituloHistorico')
+            ->from('RafaelSantiagoTesouroDiretoBundle:TituloHistorico','tituloHistorico')
+            ->where('tituloHistorico.titulo = :tituloTesouroId')
+            ->setParameter('tituloTesouroId', $objTitulo->getTitulo()->getId())
+            ->orderBy('tituloHistorico.data', 'DESC')
+            ->getQuery()
+            ->execute();
+
+        return (count($arrHistoricos)) ? $arrHistoricos[0] : false;
+
+    }
 }

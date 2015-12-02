@@ -38,4 +38,29 @@ class TituloTesouroRepository extends \Doctrine\ORM\EntityRepository
 
     }
 
+    /**
+     * Busca todos os titulos de um determinado tipo e retorna um array com os ids dos titulos.
+     *
+     * @param $type
+     * @return array
+     */
+    public function findByType($type)
+    {
+        $arrTitulos = $this->getEntityManager()->createQueryBuilder()
+            ->select('tituloTesouro')
+            ->from('RafaelSantiagoTesouroDiretoBundle:TituloTesouro','tituloTesouro')
+            ->where('tituloTesouro.descricao like :type')
+            ->setParameter('type', '%' . $type . '%')
+            ->getQuery()
+            ->execute();
+
+        $arrIds = array();
+        foreach ($arrTitulos as $objTitulo){
+            $arrIds[] = $objTitulo->getId();
+        }
+
+        return $arrIds;
+
+    }
+
 }

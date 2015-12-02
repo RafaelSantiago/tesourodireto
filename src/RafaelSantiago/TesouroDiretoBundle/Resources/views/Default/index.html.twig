@@ -39,15 +39,25 @@
                             </div>
                         </a>
                     </div>
-                    <div class="col-md-12 col-xs-12 col-sm-12">
+                    <div class="col-md-6 col-xs-12 col-sm-12">
                         <a class="info-tiles {{ classProfit }}">
                             <div class="tiles-heading">
                                 <div class="pull-left">Lucro/Perda</div>
-                                <div class="pull-right"><i class="fa {{ iconProfit }}"></i> {{ porcProfit|number_format(2,',','.') }} %</div>
                             </div>
                             <div class="tiles-body">
                                 <div class="pull-left"><i class="fa fa-dollar"></i></div>
                                 <div class="pull-right">{{ valorProfit|number_format(2,',','.') }}</div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-xs-12 col-sm-12">
+                        <a class="info-tiles {{ classProfit }}">
+                            <div class="tiles-heading">
+                                <div class="pull-left">Lucro/Perda (%)</div>
+                            </div>
+                            <div class="tiles-body">
+                                <div class="pull-left"><i class="fa fa-dollar"></i></div>
+                                <div class="pull-right">{{ porcProfit|number_format(2,',','.') }} %</div>
                             </div>
                         </a>
                     </div>
@@ -80,40 +90,57 @@
                         <table width="100%" cellpadding="0" cellspacing="0" border="0" class="table table-hover table-striped table-responsive">
                             <thead>
                             <tr>
-                                <th class="text-center">Data Compra</th>
                                 <th>Título</th>
-                                <th class="text-center">Vencimento</th>
-                                <th class="text-center">Taxa (a.a)</th>
-                                <th class="text-right">Preço</th>
                                 <th class="text-center">Quantidade</th>
-                                <th class="text-right">Valor Pago</th>
+                                <th class="text-center">Valor Pago</th>
                                 <th class="text-center">Dias</th>
-                                <th class="text-right">Valor Atual</th>
-                                <th class="text-right">Profit</th>
-                                <th class="text-right">IOF + IRRF</th>
-                                <th class="text-right">Profit Liquido</th>
+                                <th class="text-center">Valor Atual</th>
+                                <th class="text-center">Profit</th>
+                                <th class="text-center">IOF + IRRF</th>
+                                <th class="text-center">Profit Liquido</th>
                             </tr>
                             </thead>
                             <tbody>
+                                {% set totalPago = 0 %}
+                                {% set totalAtual = 0 %}
+                                {% set totalProfit = 0 %}
+                                {% set totalImposto = 0 %}
+                                {% set totalLiquido = 0 %}
+
                                 {% for titulo in titulos %}
-                                    {% set classProfit = (titulo.ValorProfit > 0) ? 'text-success' : 'text-danger' %}
-                                    {% set iconProfit = (titulo.ValorProfit > 0) ? 'fa-arrow-up' : 'fa-arrow-down' %}
                                     <tr>
-                                        <td class="text-center">{{ titulo.dataCompra|date('d/m/Y') }}</td>
-                                        <td>{{ titulo.titulo.descricao }}</td>
-                                        <td class="text-center">{{ titulo.dataVencimento|date('d/m/Y') }}</td>
-                                        <td class="text-center">{{ titulo.taxa|number_format(2,',','.') }} %</td>
-                                        <td class="text-right">R$ {{ titulo.valorTitulo|number_format(2,',','.') }}</td>
+                                        <td>
+                                            <b>{{ titulo.titulo.descricao }}</b><br/>
+                                            Compra: {{ titulo.dataCompra|date('d/m/Y') }}<br/>
+                                            Vencimento: {{ titulo.dataVencimento|date('d/m/Y') }}<br/>
+                                            Taxa: {{ titulo.taxa|number_format(2,',','.') }} %<br/>
+                                            Valor: R$ {{ titulo.valorTitulo|number_format(2,',','.') }}
+                                        </td>
                                         <td class="text-center">{{ titulo.quantidade|number_format(2,',','.') }}</td>
-                                        <td class="text-right">R$ {{ titulo.valorInvestido|number_format(2,',','.') }}</td>
+                                        <td class="text-center">R$ {{ titulo.valorInvestido|number_format(2,',','.') }}</td>
                                         <td class="text-center">{{ titulo.diasInvestido }}</td>
-                                        <td class="text-right">R$ {{ titulo.valorAtualizado|number_format(2,',','.') }}</td>
-                                        <td class="text-right {{ classProfit }}">R$ {{ titulo.valorProfit|number_format(2,',','.') }} <i class="fa {{ iconProfit }} {{ classProfit }}"></i></td>
-                                        <td class="text-right">R$ {{ titulo.valorImpostos|number_format(2,',','.') }}</td>
-                                        <td class="text-right {{ classProfit }}">R$ {{ titulo.valorProfitLiquido|number_format(2,',','.') }} <i class="fa {{ iconProfit }} {{ classProfit }}"></i></td>
+                                        <td class="text-center">R$ {{ titulo.valorAtualizado|number_format(2,',','.') }}</td>
+                                        <td class="text-center">{% autoescape false %}{{ titulo_profit(titulo.valorInvestido, titulo.valorAtualizado) }}{% endautoescape %}</td>
+                                        <td class="text-center">R$ {{ titulo.valorImpostos|number_format(2,',','.') }}</td>
+                                        <td class="text-center">{% autoescape false %}{{ titulo_profit(titulo.valorInvestido, titulo.valorAtualizado - titulo.valorImpostos) }}{% endautoescape %}</td>
                                     </tr>
+                                    {% set totalPago = totalPago + titulo.valorInvestido %}
+                                    {% set totalAtual = totalAtual + titulo.valorAtualizado %}
+                                    {% set totalImposto = totalImposto + titulo.valorImpostos %}
                                 {% endfor %}
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td class="bg-primary">&nbsp;</td>
+                                    <td class="bg-primary">&nbsp;</td>
+                                    <td class="text-center bg-primary">R$ {{ totalPago|number_format(2,',','.') }}</td>
+                                    <td class="bg-primary">&nbsp;</td>
+                                    <td class="text-center bg-primary">R$ {{ totalAtual|number_format(2,',','.') }}</td>
+                                    <td class="text-center bg-primary">{% autoescape false %}{{ titulo_profit(totalPago, totalAtual, false) }}{% endautoescape %}</td>
+                                    <td class="text-center bg-primary">R$ {{ totalImposto|number_format(2,',','.') }}</td>
+                                    <td class="text-center bg-primary">{% autoescape false %}{{ titulo_profit(totalPago, totalAtual - totalImposto, false) }}{% endautoescape %}</td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
