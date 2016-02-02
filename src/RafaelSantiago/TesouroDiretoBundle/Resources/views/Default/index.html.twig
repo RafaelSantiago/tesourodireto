@@ -97,6 +97,7 @@
                                 <th class="text-center">Valor Atual</th>
                                 <th class="text-center">Profit</th>
                                 <th class="text-center">IOF + IRRF</th>
+                                <th class="text-center">Tx. Cust.</th>
                                 <th class="text-center">Profit Liquido</th>
                             </tr>
                             </thead>
@@ -105,6 +106,7 @@
                                 {% set totalAtual = 0 %}
                                 {% set totalProfit = 0 %}
                                 {% set totalImposto = 0 %}
+                                {% set totalTaxaCustodia = 0 %}
                                 {% set totalLiquido = 0 %}
 
                                 {% for titulo in titulos %}
@@ -122,11 +124,13 @@
                                         <td class="text-center">R$ {{ titulo.valorAtualizado|number_format(2,',','.') }}</td>
                                         <td class="text-center">{% autoescape false %}{{ titulo_profit(titulo.valorInvestido, titulo.valorAtualizado) }}{% endautoescape %}</td>
                                         <td class="text-center">R$ {{ titulo.valorImpostos|number_format(2,',','.') }}</td>
+                                        <td class="text-center">R$ {{ titulo.valorTxCustodia|number_format(2,',','.') }}</td>
                                         <td class="text-center">{% autoescape false %}{{ titulo_profit(titulo.valorInvestido, titulo.valorAtualizado - titulo.valorImpostos) }}{% endautoescape %}</td>
                                     </tr>
                                     {% set totalPago = totalPago + titulo.valorInvestido %}
                                     {% set totalAtual = totalAtual + titulo.valorAtualizado %}
                                     {% set totalImposto = totalImposto + titulo.valorImpostos %}
+                                    {% set totalTaxaCustodia = totalTaxaCustodia + titulo.valorTxCustodia %}
                                 {% endfor %}
                             </tbody>
                             <tfoot>
@@ -138,6 +142,7 @@
                                     <td class="text-center bg-primary">R$ {{ totalAtual|number_format(2,',','.') }}</td>
                                     <td class="text-center bg-primary">{% autoescape false %}{{ titulo_profit(totalPago, totalAtual, false) }}{% endautoescape %}</td>
                                     <td class="text-center bg-primary">R$ {{ totalImposto|number_format(2,',','.') }}</td>
+                                    <td class="text-center bg-primary">R$ {{ totalTaxaCustodia|number_format(2,',','.') }}</td>
                                     <td class="text-center bg-primary">{% autoescape false %}{{ titulo_profit(totalPago, totalAtual - totalImposto, false) }}{% endautoescape %}</td>
                                 </tr>
                             </tfoot>

@@ -13,6 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Titulo
 {
 
+    const TX_CUSTODIA = 0.3;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -307,6 +309,14 @@ class Titulo
 
         return ($this->getValorProfit() * $taxa) / 100;
 
+    }
+
+    public function getValorTxCustodia()
+    {
+        $txDiaria = (pow(1 + (self::TX_CUSTODIA/100),(1/365))-1);
+        $valor = $this->getValorInvestido() * pow(1 + ($txDiaria), $this->getDiasInvestido()) - $this->getValorInvestido();
+
+        return $valor;
     }
 
     public function getValorImpostos()
