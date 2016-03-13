@@ -3,9 +3,8 @@
 namespace RafaelSantiago\TesouroDiretoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bundle\SecurityBundle\Tests\Functional\Bundle\AclBundle\Entity\Car;
+use RafaelSantiago\TesouroDiretoBundle\Helper\CalculadorHelper;
 use Symfony\Component\Validator\Constraints as Assert;
-use Carbon\Carbon;
 
 /**
  * @ORM\Entity(repositoryClass="RafaelSantiago\TesouroDiretoBundle\Entity\Repository\TituloRepository")
@@ -13,6 +12,8 @@ use Carbon\Carbon;
  */
 class Titulo
 {
+
+    const TX_CUSTODIA = 0.3;
 
     /**
      * @ORM\Id
@@ -310,32 +311,65 @@ class Titulo
 
     }
 
+    public function getValorTxCustodia()
+    {
+        $txDiaria = (pow(1 + (self::TX_CUSTODIA/100),(1/365))-1);
+        $valor = $this->getValorInvestido() * pow(1 + ($txDiaria), $this->getDiasInvestido()) - $this->getValorInvestido();
+
+        return $valor;
+    }
+
     public function getValorImpostos()
     {
         return $this->getValorIof() + $this->getValorIrrf();
     }
 
-    public function getRentabilidadeTitulo()
+    /**
+     * Constructor
+     */
+    public function __construct()
     {
+        $this->tituloHistoricos = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
-        $arrRentabilidades = array(
-            '1day' => 0,
-            'week' => 0,
-            'month' => 0,
-            '30days' => 0,
-            'year' => 0,
-            '12months' => 0
-        );
+    /**
+     * Add tituloHistorico
+     *
+     * @param \RafaelSantiago\TesouroDiretoBundle\Entity\TituloHistorico $tituloHistorico
+     *
+     * @return Titulo
+     */
+    public function addTituloHistorico(\RafaelSantiago\TesouroDiretoBundle\Entity\TituloHistorico $tituloHistorico)
+    {
+        $this->tituloHistoricos[] = $tituloHistorico;
 
-        $objDateToday = new Carbon('today');
+        return $this;
+    }
 
-        // 1 dia
-        $objDataStartOfWeek = $objDateToday->startOfWeek();
-        $arrHistorico = $this-
-        $objDateYesterday = new Carbon('yesterday');
+    /**
+     * Remove tituloHistorico
+     *
+     * @param \RafaelSantiago\TesouroDiretoBundle\Entity\TituloHistorico $tituloHistorico
+     */
+    public function removeTituloHistorico(\RafaelSantiago\TesouroDiretoBundle\Entity\TituloHistorico $tituloHistorico)
+    {
+        $this->tituloHistoricos->removeElement($tituloHistorico);
+    }
 
-        echo $objDateYesterday->format('d/m/Y');
+    /**
+     * Get tituloHistoricos
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTituloHistoricos()
+    {
+        return $this->tituloHistoricos;
+    }
 
+    public function getPrevisaoValorVencimento()
+    {
+        $objCalculador = new CalculadorHelper();
+        $objCalculador->calculaPrecoFinalTitulo($this);
     }
 
 }

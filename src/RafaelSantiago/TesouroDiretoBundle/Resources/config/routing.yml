@@ -6,6 +6,26 @@ rafael_santiago_tesouro_direto_insert:
     path:     /insert
     defaults: { _controller: RafaelSantiagoTesouroDiretoBundle:Default:insert }
 
+rafael_santiago_tesouro_direto_sell:
+    path:     /sell
+    defaults: { _controller: RafaelSantiagoTesouroDiretoBundle:Default:sell }
+
+rafael_santiago_tesouro_direto_sell_2:
+    path:     /sell/step2
+    defaults: { _controller: RafaelSantiagoTesouroDiretoBundle:Default:sellStep2 }
+
 rafael_santiago_tesouro_direto_performance:
     path:     /analise
     defaults: { _controller: RafaelSantiagoTesouroDiretoBundle:Default:performance }
+
+rafael_santiago_tesouro_direto_ajax_getvalortitulo:
+    path:     /async/getValorTitulo
+    defaults: { _controller: RafaelSantiagoTesouroDiretoBundle:Default:asyncGetValorTitulo }
+    options:
+        expose: true
+
+rafael_santiago_tesouro_direto_ajax_gettitulosvenda:
+    path:     /async/getTitulosVenda
+    defaults: { _controller: RafaelSantiagoTesouroDiretoBundle:Default:asyncGetTitulosVenda }
+    options:
+        expose: true

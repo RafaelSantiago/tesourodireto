@@ -1,3 +1,6 @@
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
 rafael_santiago_tesouro_direto:
     resource: "@RafaelSantiagoTesouroDiretoBundle/Resources/config/routing.yml"
     prefix:   /

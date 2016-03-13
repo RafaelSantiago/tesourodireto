@@ -1,0 +1,70 @@
+<?php
+
+namespace RafaelSantiago\TesouroDiretoBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @ORM\Entity(repositoryClass="RafaelSantiago\TesouroDiretoBundle\Entity\Repository\VendaRepository")
+ * @ORM\Table(name="venda")
+ */
+class Venda
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(name="data_venda", type="datetime", unique=false, nullable=false)
+     * @Assert\NotBlank
+     * @var \DateTime
+     */
+    protected $data_venda;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="RafaelSantiago\TesouroDiretoBundle\Entity\TituloTesouro")
+     * @ORM\JoinColumn(name="titulo_tesouro_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $tituloTesouro;
+
+    /**
+     * @ORM\Column(name="valor_venda", type="float", unique=false, nullable=false)
+     * @var float
+     */
+    protected $valor_venda;
+
+    /**
+     * @ORM\Column(name="quantidade", type="float", unique=false, nullable=false)
+     * @var float
+     */
+    protected $quantidade;
+
+    /**
+     * @ORM\Column(name="valor_lucro_bruto", type="float", unique=false, nullable=false)
+     * @var float
+     */
+    protected $valor_lucro_bruto;
+
+    /**
+     * @ORM\Column(name="valor_taxa_custodia", type="float", unique=false, nullable=false)
+     * @var float
+     */
+    protected $valor_taxa_custodia;
+
+    /**
+     * @ORM\Column(name="valor_impostos", type="float", unique=false, nullable=false)
+     * @var float
+     */
+    protected $valor_impostos;
+
+    /**
+     * @ORM\Column(name="valor_lucro_liquido", type="float", unique=false, nullable=false)
+     * @var float
+     */
+    protected $valor_lucro_liquido;
+
+}

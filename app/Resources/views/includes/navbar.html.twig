@@ -5,7 +5,12 @@
     </div>
     <hr />
     <div class="box-user hidden-xs">
-        <a class="btn btn-green" href="{{ path('rafael_santiago_tesouro_direto_insert') }}"><i class="fa fa-cloud-upload"></i> Adicionar Título</a>
+        <div class="row">
+            <div class="col-xs-12">
+                <a class="btn btn-green" href="{{ path('rafael_santiago_tesouro_direto_insert') }}">Comprar</a>
+                <a class="btn btn-danger" href="{{ path('rafael_santiago_tesouro_direto_sell') }}">Vender</a>
+            </div>
+        </div>
     </div>
     <hr />
     <ul class="acc-menu" id="sidebar">
