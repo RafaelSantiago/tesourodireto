@@ -1,0 +1,100 @@
+{% extends '::base.html.twig' %}
+
+{% form_theme form '@RafaelSantiagoTesouroDireto/Form/fieldsAdminEdit.html.twig' %}
+
+{% block ngcontroller %}ng-controller="vendaTituloCtrl"{% endblock %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li><a href="{{ path('rafael_santiago_tesouro_direto_homepage') }}">Dashboard</a></li>
+        <li class="active">Vender Título</li>
+    </ol>
+{% endblock %}
+
+{% block tituloPagina %}
+    Vender Título
+{% endblock %}
+
+{% block filters %}
+
+{% endblock %}
+
+{% block botoesTopo %}
+    <a href="{{ path('rafael_santiago_tesouro_direto_homepage') }}" class="btn btn-default"><i class="fa fa-angle-double-left"></i> Voltar</a>
+{% endblock %}
+
+{% block conteudo %}
+    <div class="panel panel-midnightblue">
+        {{ form_start(form) }}
+        <div class="panel-heading">
+            <h4>Dados da Venda</h4>
+        </div>
+        <div class="panel-body">
+            <fieldset>
+                {{ form_row(form.data_venda) }}
+                {{ form_row(form.tituloTesouro) }}
+                {{ form_row(form.valor_venda) }}
+                {{ form_row(form.quantidade) }}
+                {{ form_row(form.valor_total_venda) }}
+                {{ form_row(form.valor_taxa_custodia) }}
+                {{ form_row(form.valor_impostos) }}
+            </fieldset>
+            <div class="row" ng-hide="hideTitulos()">
+                <div class="col-xs-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4>Títulos</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Data Compra</th>
+                                        <th>Valor Compra</th>
+                                        <th>Qtd.</th>
+                                        <th>Qtd. Vendida</th>
+                                        <th>Valor Total Compra</th>
+                                        <th>Qtd. Dias</th>
+                                        <th>Valor Total Venda</th>
+                                        <th>Valor Taxas</th>
+                                        <th>Valor Impostos</th>
+                                        <th>Valor Liquido Venda</th>
+                                        <th>Lucro</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="titulo in titulos">
+                                        <td>{{ '{{ titulo.dataCompra }}' }}</td>
+                                        <td>{{ '{{ titulo.valorCompra | currency:"R$ ":2 }}' }}</td>
+                                        <td>{{ '{{ titulo.quantidade }}' }}</td>
+                                        <td>{{ '{{ titulo.quantidadeVendida }}' }}</td>
+                                        <td>{{ '{{ titulo.valorInvestido | currency:"R$ ":2 }}' }}</td>
+                                        <td>{{ '{{ titulo.qtdDias }}' }}</td>
+                                        <td>{{ '{{ titulo.valorVenda | currency:"R$ ":2 }}' }}</td>
+                                        <td>{{ '{{ titulo.valorTaxas | currency:"R$ ":2 }}' }}</td>
+                                        <td>{{ '{{ titulo.valorImpostos | currency:"R$ ":2 }}' }}</td>
+                                        <td>{{ '{{ titulo.valorLiquido | currency:"R$ ":2 }}' }}</td>
+                                        <td>{{ '{{ titulo.valorLucro | currency:"R$ ":2 }}' }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form-actions">
+                <div class="col-sm-offset-3">
+                    {{ form_widget(form.salvar) }}
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/rafaelsantiagotesourodireto/js/angular_scripts/controllers/vendaTituloCtrl.js') }}"></script>
+{% endblock %}

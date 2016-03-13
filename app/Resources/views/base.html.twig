@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt-br">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pt-br" ng-app="tesouroDireto">
 <head>
     <title>Tesouro Direto</title>
     <meta name="author" content="Quality Press" />
@@ -26,9 +26,12 @@
         <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/plugins/form-daterangepicker/daterangepicker-bs3.css') }}'></script>
         <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/plugins/morris/morris.css') }}'></script>
         <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/js/jquery-1.10.2.min.js') }}'></script>
+        <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/js/angular.min.js') }}'></script>
+        <script type='text/javascript' src='{{ asset('bundles/fosjsrouting/js/router.js') }}'></script>
+        <script type='text/javascript' src='{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}'></script>
     {% endblock %}
 </head>
-<body>
+<body {% block ngcontroller %}{% endblock %}>
 {% include '::/includes/header.html.twig' %}
 {% include '::/includes/navbarTop.html.twig' %}
 <div id="page-container">
@@ -112,6 +115,8 @@
     <script type='text/javascript' src='http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js'></script>
     <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/plugins/morris/morris.min.js') }}'></script>
     <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/plugins/tooltipster/js/jquery.tooltipster.min.js') }}'></script>
+    <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/js/angular_scripts/base.js') }}'></script>
+    <script type='text/javascript' src='{{ asset ('bundles/rafaelsantiagotesourodireto/js/util.js') }}'></script>
 {% endblock %}
 
 </body>

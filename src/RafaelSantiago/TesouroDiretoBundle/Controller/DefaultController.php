@@ -2,13 +2,16 @@
 
 namespace RafaelSantiago\TesouroDiretoBundle\Controller;
 
+use RafaelSantiago\TesouroDiretoBundle\Entity\TituloTesouro;
 use RafaelSantiago\TesouroDiretoBundle\Entity\Titulo;
+use RafaelSantiago\TesouroDiretoBundle\Entity\Venda;
+use RafaelSantiago\TesouroDiretoBundle\Entity\TituloHistorico;
 use RafaelSantiago\TesouroDiretoBundle\Form\Type\TituloType;
+use RafaelSantiago\TesouroDiretoBundle\Form\Type\VendaType;
 use RafaelSantiago\TesouroDiretoBundle\Helper\CalculadorHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\DomCrawler\Crawler;
-use Goutte\Client;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
@@ -109,6 +112,24 @@ class DefaultController extends Controller
             'form' => $formTitulo->createView()
         ));
 
+    }
+
+    public function sellAction(Request $request)
+    {
+        $objVenda = new Venda();
+
+        $formVenda = $this->createForm(new VendaType(), $objVenda, array(
+            'action' => $this->generateUrl('rafael_santiago_tesouro_direto_sell_2')
+        ));
+
+        return $this->render('@RafaelSantiagoTesouroDireto/Default/sell.html.twig', array(
+            'form' => $formVenda->createView()
+        ));
+    }
+
+    public function sellStep2Action(Request $request)
+    {
+        return new Response('oi');
     }
 
     public function performanceAction(Request $request)
@@ -223,6 +244,112 @@ class DefaultController extends Controller
         );
 
         return $arrRentabilidades;
+    }
+
+    public function asyncGetValorTituloAction(Request $request)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $objData = \DateTime::createFromFormat('d/m/Y h:i:s',$request->get('data').' 00:00:00');
+        $titulo = $request->get('titulo');
+
+        $valor = 0;
+
+        if ($objData instanceof \Datetime && $titulo > 0){
+            $repositoryTitulosHistorico = $em->getRepository('RafaelSantiagoTesouroDiretoBundle:TituloHistorico');
+            $objTituloHistorico = $repositoryTitulosHistorico->findOneBy(array(
+                'data' => $objData,
+                'titulo' => $titulo,
+            ));
+            if ($objTituloHistorico instanceof TituloHistorico){
+                $success = true;
+                $valor = $objTituloHistorico->getValorVenda();
+            }
+            else {
+                $success = false;
+            }
+        }
+        else {
+            $success = false;
+        }
+
+        $response = new Response(
+            json_encode(array(
+                'success' => $success,
+                'valor' => number_format($valor,2,',','')
+            ))
+        );
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
+    public function asyncGetTitulosVendaAction(Request $request)
+    {
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $tituloRepository = $em->getRepository('RafaelSantiagoTesouroDiretoBundle:Titulo');
+
+        $tituloId = $request->get('titulo');
+
+        $quantidade = $request->get('quantidade');
+        $quantidade = str_replace('.','',$quantidade);
+        $quantidade = str_replace(',','.',$quantidade);
+        $quantidade = floatval($quantidade);
+
+        $valorVenda = $request->get('valorVenda');
+        $valorVenda = str_replace('.','',$valorVenda);
+        $valorVenda = str_replace(',','.',$valorVenda);
+        $valorVenda = floatval($valorVenda);
+
+        $arrTitulosVenda = $tituloRepository->findBy(array(
+            'titulo' => $tituloId
+        ), array(
+            'data_compra' => 'ASC'
+        ));
+
+        $arrTitulosRetorno = array();
+
+        $quantidadeReservada = 0;
+
+        foreach ($arrTitulosVenda as $objTitulo) {
+            if ($quantidadeReservada < $quantidade){
+                if ($objTitulo->getQuantidade() > ($quantidade - $quantidadeReservada)){
+                    $quantidadeTitulo = $quantidade - $quantidadeReservada;
+                }
+                else {
+                    $quantidadeTitulo = $objTitulo->getQuantidade();
+                }
+
+                $titulo['dataCompra'] = $objTitulo->getDataCompra()->format('d/m/Y');
+                $titulo['valorCompra'] = $objTitulo->getValorTitulo();
+                $titulo['quantidade'] = $objTitulo->getQuantidade();
+                $titulo['quantidadeVendida'] = $quantidadeTitulo;
+                $titulo['valorInvestido'] = round($objTitulo->getValorInvestido(),2);
+                $titulo['qtdDias'] = $objTitulo->getDiasInvestido();
+                $titulo['valorVenda'] = round($quantidadeTitulo * $valorVenda, 2);
+                $titulo['valorTaxas'] = round($objTitulo->getValorTxCustodia(), 2);
+                $titulo['valorImpostos'] = round($objTitulo->getValorImpostos(), 2);
+                $titulo['valorLiquido'] = $titulo['valorVenda'] - $titulo['valorTaxas'] - $titulo['valorImpostos'];
+                $titulo['valorLucro'] = round($titulo['valorLiquido'] - $titulo['valorInvestido'], 2);
+                $arrTitulosRetorno[] = $titulo;
+
+                $quantidadeReservada += $quantidadeTitulo;
+            }
+
+        }
+
+        $response = new Response(
+            json_encode(array(
+                'success' => true,
+                'titulos' => $arrTitulosRetorno
+            ))
+        );
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+
     }
 
 }
